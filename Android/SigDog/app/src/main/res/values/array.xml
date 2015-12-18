@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="doencas_array">
+        <item>Selecione</item>
+        <item>Cinomose</item>
+        <item>Coronavirose</item>
+        <item>Hepatite Infecciosa</item>
+        <item>Leishmaniose</item>
+        <item>Leptospirose</item>
+        <item>Parainfluenza</item>
+        <item>Parvovirose</item>
+        <item>Raiva</item>
+    </string-array>
+
+    <string-array name="logradouro_array">
+        <item>Aeroporto</item>
+        <item>Alameda</item>
+        <item>Área</item>
+        <item>Avenida</item>
+        <item>Campo</item>
+        <item>Chácara</item>
+        <item>Colônia</item>
+        <item>Condomínio</item>
+        <item>Conjunto</item>
+        <item>Distrito</item>
+        <item>Esplanada</item>
+        <item>Estação</item>
+        <item>Estrada</item>
+        <item>Favela</item>
+        <item>Fazenda</item>
+        <item>Feira</item>
+        <item>Jardim</item>
+        <item>Ladeira</item>
+        <item>Lago</item>
+        <item>Lagoa</item>
+        <item>Largo</item>
+        <item>Loteamento</item>
+        <item>Morro</item>
+        <item>Núcleo</item>
+        <item>Parque</item>
+        <item>Passarela</item>
+        <item>Pátio</item>
+        <item>Praça</item>
+        <item>Quadra</item>
+        <item>Recanto</item>
+        <item>Residencial</item>
+        <item>Rodovia</item>
+        <item>Rua</item>
+        <item>Setor</item>
+        <item>Sítio</item>
+        <item>Travessa</item>
+        <item>Trecho</item>
+        <item>Trevo</item>
+        <item>Vale</item>
+        <item>Vereda</item>
+        <item>Via</item>
+        <item>Viaduto</item>
+        <item>Viela</item>
+        <item>Vila</item>
+    </string-array>
+
+    <string-array name="cidades_array">
+        <item>Selecione</item>
+        <item>Aquidauana</item>
+        <item>Anastácio</item>
+    </string-array>
+
+    <string-array name="idade_array">
+        <item>Selecione</item>
+        <item>Filhote</item>
+        <item>Jovem</item>
+        <item>Adulto</item>
+        <item>Idoso</item>
+    </string-array>
+</resources>

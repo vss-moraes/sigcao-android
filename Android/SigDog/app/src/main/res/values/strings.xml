@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">SigDog</string>
+    <string name="action_settings">Settings</string>
+    <string name="titulo">Dados do Animal</string>
+    <string name="raca">Raça:</string>
+    <string name="sex">Sexo:</string>
+    <string name="masc">Masculino</string>
+    <string name="fem">Feminino</string>
+    <string name="idade">Faixa Etária:</string>
+    <string name="doenca">Doença:</string>
+    <string name="endereco">Endereço</string>
+    <string name="nome">Nome:</string>
+    <string name="num">Número:</string>
+    <string name="bairro">Bairro:</string>
+    <string name="cidade">Cidade:</string>
+    <string name="enviar">Enviar</string>
+    <string name="prox">Próximo</string>
+    <string name="action_filter">Filtrar</string>
+    <string name="action_prox">Próximo</string>
+    <string name="tipo_logradouro">Tipo de Logradouro:</string>
+</resources>
