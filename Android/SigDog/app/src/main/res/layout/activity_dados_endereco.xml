@@ -20,9 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="8dp"
-            android:id="@+id/linearLayout"
-            android:elevation="3dp"
-            android:background="#e1bee7">
+            android:id="@+id/linearLayout">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -40,11 +38,11 @@
                 android:text="@string/tipo_logradouro"
                 android:id="@+id/textView2" />
 
-            <Spinner
+            <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinner_logradouro"
-                android:spinnerMode="dialog"/>
+                android:id="@+id/auto_complete_logradouro"
+                android:inputType="text" />
 
             <TextView
                 android:layout_width="wrap_content"

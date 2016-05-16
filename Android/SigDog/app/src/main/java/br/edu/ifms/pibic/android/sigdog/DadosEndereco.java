@@ -1,15 +1,48 @@
 package br.edu.ifms.pibic.android.sigdog;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.location.Address;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
+
 
 public class DadosEndereco extends AppCompatActivity {
+
+    public LatLng pegaCoordenadasDoEndereco(Context context, String enderecoString) {
+        Geocoder coder = new Geocoder(context);
+        List<Address> endereco;
+        LatLng ponto = null;
+
+        try {
+            endereco = coder.getFromLocationName(enderecoString, 5);
+            if (endereco == null)
+                return null;
+            Address localizacao = endereco.get(0);
+            localizacao.getLatitude();
+            localizacao.getLongitude();
+
+            ponto = new LatLng(localizacao.getLatitude(), localizacao.getLongitude());
+        } catch (Exception e){
+            e.printStackTrace();
+            Log.i("Endereco completo: ", "Exception no geocoder.");
+        }
+        return ponto;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +58,8 @@ public class DadosEndereco extends AppCompatActivity {
 
         ArrayAdapter<String> adapterLogradouro = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item, LOGRADOURO);
-        Spinner spinnerLogradouro = (Spinner) findViewById(R.id.spinner_logradouro);
-        spinnerLogradouro.setAdapter(adapterLogradouro);
+        AutoCompleteTextView logradouro = (AutoCompleteTextView) findViewById(R.id.auto_complete_logradouro);
+        logradouro.setAdapter(adapterLogradouro);
 
     }
 
@@ -43,16 +76,51 @@ public class DadosEndereco extends AppCompatActivity {
         if(id == android.R.id.home){
             finish();
             return true;
-        } else if(id == R.id.action_prox){
-            CharSequence text = "Ocorrência enviada!";
-            int duration = Toast.LENGTH_SHORT;
+        } else if(id == R.id.action_prox) {
 
-            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
-            toast.show();
+            EditText nome = (EditText) findViewById(R.id.editText3);
+            EditText logradouro = (EditText) findViewById(R.id.auto_complete_logradouro);
+            EditText bairro = (EditText) findViewById(R.id.editText6);
+            EditText numero = (EditText) findViewById(R.id.editText5);
 
-            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
+            Spinner cidade = (Spinner) findViewById(R.id.spinner_cidade);
+            TextView cidadeSelecionada = (TextView) cidade.getSelectedView();
+
+            if (logradouro.getText().toString().length() == 0){
+                logradouro.setError("Preenchimento obrigatório!");
+            } else if (nome.getText().toString().length() == 0){
+                nome.setError("Preenchimento obrigatório!");
+            } else if (bairro.getText().toString().length() == 0){
+                bairro.setError("Preenchimento obrigatório!");
+            } else if (cidadeSelecionada.getText().toString().equals("Selecione")){
+                cidadeSelecionada.setError("Preenchimento obrigatório!");
+            } else {
+
+                String enderecoCompleto = logradouro.getText().toString() + " " +
+                        nome.getText().toString() + ", " + numero.getText().toString() + ". "
+                        + cidadeSelecionada.getText().toString() + ", MS, Brasil.";
+                Log.i("Endereco completo: ", enderecoCompleto);
+
+                LatLng localizacao = pegaCoordenadasDoEndereco(this, enderecoCompleto);
+
+                CharSequence text;
+                if (localizacao != null){
+                    text = localizacao.toString();
+                    Log.i("LatLng: ", localizacao.toString());
+                } else {
+                    text = "Shift.";
+                    Log.i("Endereco completo: ", "Deu merda!");
+                }
+
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                toast.show();
+
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
         }
         return super.onOptionsItemSelected(item);
     }

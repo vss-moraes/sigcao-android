@@ -18,4 +18,6 @@
     <string name="action_filter">Filtrar</string>
     <string name="action_prox">Próximo</string>
     <string name="tipo_logradouro">Tipo de Logradouro:</string>
+    <string name="data">Data:</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

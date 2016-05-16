@@ -1,14 +1,21 @@
 package br.edu.ifms.pibic.android.sigdog;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+
 
 public class DadosAnimal extends AppCompatActivity {
 
@@ -36,6 +43,21 @@ public class DadosAnimal extends AppCompatActivity {
                 findViewById(R.id.autoComplete_racas);
         textView.setAdapter(adapterRacas);
 
+        final TextView data = (TextView) findViewById(R.id.data);
+
+        long date = System.currentTimeMillis();
+        SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+        String dateString = formatoData.format(date);
+        data.setText(dateString);
+
+        data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
+
     }
 
     @Override
@@ -51,15 +73,23 @@ public class DadosAnimal extends AppCompatActivity {
         if(id == android.R.id.home){
             finish();
             return true;
-        } else if(id == R.id.action_prox) {
+        } else if (id == R.id.action_prox) {
             EditText raca = (EditText) findViewById(R.id.autoComplete_racas);
+            Spinner faixaEtaria = (Spinner) findViewById(R.id.spinner_idade);
+            TextView faixaEtariaSelecionada = (TextView) faixaEtaria.getSelectedView();
+            Spinner spinnerDoencas = (Spinner) findViewById(R.id.spinner_doenca);
+            TextView doencaSelecionada = (TextView) spinnerDoencas.getSelectedView();
 
-            if (raca.getText().toString().length() == 0){
-                raca.setError("Raça é necessário!");
-            } else {
+            /*if (raca.getText().toString().length() == 0) {
+                raca.setError("Preenchimento obrigatório!");
+            } else if (faixaEtariaSelecionada.getText().toString().equals("Selecione")) {
+                faixaEtariaSelecionada.setError("Preenchimento obrigatório!");
+            } else if (doencaSelecionada.getText().toString().equals("Selecione")){
+                doencaSelecionada.setError("Preenchimento obrigatório!");
+            } else {*/
                 Intent dadosEndereco = new Intent(getApplicationContext(), DadosEndereco.class);
                 startActivity(dadosEndereco);
-            }
+            //}
         }
         return super.onOptionsItemSelected(item);
     }
