@@ -3,19 +3,17 @@ package br.edu.ifms.pibic.android.sigdog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.widget.DatePicker;
-import android.widget.TimePicker;
-
+import android.widget.TextView;
 
 import java.util.Calendar;
 
-/**
- * Created by vsant on 23/04/16.
- */
+
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+    private TextView data;
+
     @Override
     public Dialog onCreateDialog (Bundle savedInstanceState){
         final Calendar c = Calendar.getInstance();
@@ -30,5 +28,4 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public void onDateSet (DatePicker view, int ano, int mes, int dia){
 
     }
-
 }

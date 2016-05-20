@@ -1,5 +1,6 @@
 package br.edu.ifms.pibic.android.sigdog;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;

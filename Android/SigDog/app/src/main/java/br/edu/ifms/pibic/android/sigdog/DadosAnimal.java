@@ -1,9 +1,10 @@
 package br.edu.ifms.pibic.android.sigdog;
 
-import android.app.DialogFragment;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,13 +12,23 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
 
 
-public class DadosAnimal extends AppCompatActivity {
+public class DadosAnimal extends AppCompatActivity implements View.OnClickListener{
+
+    private TextView data;
+    private SimpleDateFormat formatoData;
+    private SimpleDateFormat formatoEnvio;
+    private DatePickerDialog dataPickerDialog;
+    private String dataEnvio;
+    private String dateString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,21 +54,37 @@ public class DadosAnimal extends AppCompatActivity {
                 findViewById(R.id.autoComplete_racas);
         textView.setAdapter(adapterRacas);
 
-        final TextView data = (TextView) findViewById(R.id.data);
+        data = (TextView) findViewById(R.id.data);
 
         long date = System.currentTimeMillis();
-        SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
-        String dateString = formatoData.format(date);
+        formatoData = new SimpleDateFormat("dd/MM/yyyy");
+        formatoEnvio = new SimpleDateFormat("yyyy-MM-dd");
+        dataEnvio = formatoEnvio.format(date);
+        dateString = formatoData.format(date);
         data.setText(dateString);
 
-        data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = new DatePickerFragment();
-                newFragment.show(getFragmentManager(), "datePicker");
-            }
-        });
+        setDateTimeField();
+    }
 
+    private void setDateTimeField(){
+        data.setOnClickListener(this);
+
+        Calendar newCalendar = Calendar.getInstance();
+        dataPickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                data.setText(formatoData.format(newDate.getTime()));
+
+                dataEnvio = formatoEnvio.format(newDate.getTime());
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    @Override
+    public void onClick(View view){
+        dataPickerDialog.show();
     }
 
     @Override
@@ -79,17 +106,36 @@ public class DadosAnimal extends AppCompatActivity {
             TextView faixaEtariaSelecionada = (TextView) faixaEtaria.getSelectedView();
             Spinner spinnerDoencas = (Spinner) findViewById(R.id.spinner_doenca);
             TextView doencaSelecionada = (TextView) spinnerDoencas.getSelectedView();
+            RadioGroup sexo = (RadioGroup) findViewById(R.id.radioGroup);
 
-            /*if (raca.getText().toString().length() == 0) {
+            int sexoId = sexo.getCheckedRadioButtonId();
+            View radioButtonID = sexo.findViewById(sexoId);
+            int sexoIndex = sexo.indexOfChild(radioButtonID) + 1;
+
+
+            String nomeRaca = raca.getText().toString();
+            int idRaca = Arrays.asList(RACAS).indexOf(nomeRaca) + 1;
+
+            if (nomeRaca.length() == 0) {
                 raca.setError("Preenchimento obrigatório!");
             } else if (faixaEtariaSelecionada.getText().toString().equals("Selecione")) {
                 faixaEtariaSelecionada.setError("Preenchimento obrigatório!");
             } else if (doencaSelecionada.getText().toString().equals("Selecione")){
                 doencaSelecionada.setError("Preenchimento obrigatório!");
-            } else {*/
+            } else {
+
+                Log.i("SEXO: ", "Masc 1, Fem 2: " + sexoIndex);
+
+                DadosOcorrencia dadosOcorrencia = new DadosOcorrencia(
+                        idRaca + "",
+                        faixaEtaria.getSelectedItemPosition() + "",
+                        spinnerDoencas.getSelectedItemPosition() + "",
+                        sexoIndex + "",
+                        dataEnvio);
                 Intent dadosEndereco = new Intent(getApplicationContext(), DadosEndereco.class);
+                dadosEndereco.putExtra("dadosAnimal", dadosOcorrencia);
                 startActivity(dadosEndereco);
-            //}
+            }
         }
         return super.onOptionsItemSelected(item);
     }

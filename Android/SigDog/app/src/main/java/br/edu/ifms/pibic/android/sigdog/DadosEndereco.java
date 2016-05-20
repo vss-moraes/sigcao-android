@@ -18,6 +18,7 @@ import android.location.Address;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -96,10 +97,17 @@ public class DadosEndereco extends AppCompatActivity {
                 cidadeSelecionada.setError("Preenchimento obrigatório!");
             } else {
 
-                String enderecoCompleto = logradouro.getText().toString() + " " +
+                final String enderecoCompleto = logradouro.getText().toString() + " " +
                         nome.getText().toString() + ", " + numero.getText().toString() + ". "
                         + cidadeSelecionada.getText().toString() + ", MS, Brasil.";
                 Log.i("Endereco completo: ", enderecoCompleto);
+
+                final DadosOcorrencia dadosOcorrencia = getIntent().getParcelableExtra("dadosAnimal");
+
+                dadosOcorrencia.setEnderecoCompleto(logradouro.getText().toString() + " " +
+                        nome.getText().toString() + ", " + numero.getText().toString() + ".");
+                dadosOcorrencia.setBairro(bairro.getText().toString());
+                dadosOcorrencia.setCidade(cidadeSelecionada.getText().toString());
 
                 LatLng localizacao = pegaCoordenadasDoEndereco(this, enderecoCompleto);
 
@@ -107,10 +115,28 @@ public class DadosEndereco extends AppCompatActivity {
                 if (localizacao != null){
                     text = localizacao.toString();
                     Log.i("LatLng: ", localizacao.toString());
+                    dadosOcorrencia.setCoordenadas(localizacao);
                 } else {
                     text = "Shift.";
                     Log.i("Endereco completo: ", "Deu merda!");
                 }
+
+                new Thread(){
+                    @Override
+                    public void run(){
+                        HttpHelper enviaDados = new HttpHelper();
+
+                        try {
+                            String s = enviaDados.doPost(
+                                    "http://sigcao.herokuapp.com/ocorrencias/nova/",
+                                    dadosOcorrencia.converteParaMapa(),
+                                    "UTF-8");
+                            Log.e("livroandroid", "String retorno: " + s);
+                        } catch (IOException e){
+                            Log.e("livroandroid", "Erro " + e.getMessage(), e);
+                        }
+                    }
+                }.start();
 
                 int duration = Toast.LENGTH_SHORT;
 
