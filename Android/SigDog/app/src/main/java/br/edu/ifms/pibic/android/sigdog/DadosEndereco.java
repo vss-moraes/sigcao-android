@@ -19,10 +19,13 @@ import android.location.Address;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class DadosEndereco extends AppCompatActivity {
+
+    private String s;
 
     public LatLng pegaCoordenadasDoEndereco(Context context, String enderecoString) {
         Geocoder coder = new Geocoder(context);
@@ -81,14 +84,17 @@ public class DadosEndereco extends AppCompatActivity {
 
             EditText nome = (EditText) findViewById(R.id.editText3);
             EditText logradouro = (EditText) findViewById(R.id.auto_complete_logradouro);
+            String nomeLogradouro = logradouro.getText().toString();
             EditText bairro = (EditText) findViewById(R.id.editText6);
             EditText numero = (EditText) findViewById(R.id.editText5);
 
             Spinner cidade = (Spinner) findViewById(R.id.spinner_cidade);
             TextView cidadeSelecionada = (TextView) cidade.getSelectedView();
 
-            if (logradouro.getText().toString().length() == 0){
+            if (nomeLogradouro.length() == 0){
                 logradouro.setError("Preenchimento obrigatório!");
+            } else if (!Arrays.asList(LOGRADOURO).contains(nomeLogradouro)){
+                logradouro.setError("Logradouro Inválido!");
             } else if (nome.getText().toString().length() == 0){
                 nome.setError("Preenchimento obrigatório!");
             } else if (bairro.getText().toString().length() == 0){
@@ -127,7 +133,7 @@ public class DadosEndereco extends AppCompatActivity {
                         HttpHelper enviaDados = new HttpHelper();
 
                         try {
-                            String s = enviaDados.doPost(
+                            s = enviaDados.doPost(
                                     "http://sigcao.herokuapp.com/ocorrencias/nova/",
                                     dadosOcorrencia.converteParaMapa(),
                                     "UTF-8");
@@ -135,6 +141,7 @@ public class DadosEndereco extends AppCompatActivity {
                         } catch (IOException e){
                             Log.e("livroandroid", "Erro " + e.getMessage(), e);
                         }
+
                     }
                 }.start();
 

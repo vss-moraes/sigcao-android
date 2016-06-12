@@ -29,6 +29,8 @@ public class DadosAnimal extends AppCompatActivity implements View.OnClickListen
     private DatePickerDialog dataPickerDialog;
     private String dataEnvio;
     private String dateString;
+    private Spinner spinnerDoencas;
+    private Spinner spinnerIdade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +38,13 @@ public class DadosAnimal extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_dados_animal);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Spinner spinnerDoencas = (Spinner) findViewById(R.id.spinner_doenca);
+        spinnerDoencas = (Spinner) findViewById(R.id.spinner_doenca);
         ArrayAdapter<CharSequence> adapterDoencas = ArrayAdapter.createFromResource(this,
                 R.array.doencas_array, android.R.layout.simple_spinner_dropdown_item);
         adapterDoencas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDoencas.setAdapter(adapterDoencas);
 
-        Spinner spinnerIdade = (Spinner) findViewById(R.id.spinner_idade);
+        spinnerIdade = (Spinner) findViewById(R.id.spinner_idade);
         ArrayAdapter<CharSequence> adapterIdade = ArrayAdapter.createFromResource(this,
                 R.array.idade_array, android.R.layout.simple_spinner_dropdown_item);
         adapterIdade.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -102,9 +104,7 @@ public class DadosAnimal extends AppCompatActivity implements View.OnClickListen
             return true;
         } else if (id == R.id.action_prox) {
             EditText raca = (EditText) findViewById(R.id.autoComplete_racas);
-            Spinner faixaEtaria = (Spinner) findViewById(R.id.spinner_idade);
-            TextView faixaEtariaSelecionada = (TextView) faixaEtaria.getSelectedView();
-            Spinner spinnerDoencas = (Spinner) findViewById(R.id.spinner_doenca);
+            TextView faixaEtariaSelecionada = (TextView) spinnerIdade.getSelectedView();
             TextView doencaSelecionada = (TextView) spinnerDoencas.getSelectedView();
             RadioGroup sexo = (RadioGroup) findViewById(R.id.radioGroup);
 
@@ -118,6 +118,8 @@ public class DadosAnimal extends AppCompatActivity implements View.OnClickListen
 
             if (nomeRaca.length() == 0) {
                 raca.setError("Preenchimento obrigatório!");
+            } else if (!Arrays.asList(RACAS).contains(nomeRaca)){
+                raca.setError("Raca Inválida!");
             } else if (faixaEtariaSelecionada.getText().toString().equals("Selecione")) {
                 faixaEtariaSelecionada.setError("Preenchimento obrigatório!");
             } else if (doencaSelecionada.getText().toString().equals("Selecione")){
@@ -128,7 +130,7 @@ public class DadosAnimal extends AppCompatActivity implements View.OnClickListen
 
                 DadosOcorrencia dadosOcorrencia = new DadosOcorrencia(
                         idRaca + "",
-                        faixaEtaria.getSelectedItemPosition() + "",
+                        spinnerIdade.getSelectedItemPosition() + "",
                         spinnerDoencas.getSelectedItemPosition() + "",
                         sexoIndex + "",
                         dataEnvio);

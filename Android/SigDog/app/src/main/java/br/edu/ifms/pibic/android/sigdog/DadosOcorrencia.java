@@ -2,6 +2,7 @@ package br.edu.ifms.pibic.android.sigdog;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -59,13 +60,13 @@ public class DadosOcorrencia implements Parcelable {
 
     public Map<String, String> converteParaMapa (){
         DecimalFormat decimalFormat = new DecimalFormat("#.000000");
-        Double latitude, longitude;
+        String latitude, longitude;
         if (this.coordenadas != null) {
-            latitude = this.coordenadas.latitude;
-            longitude = this.coordenadas.longitude;
+            latitude = decimalFormat.format(this.coordenadas.latitude).replace(",", ".");
+            longitude = decimalFormat.format(this.coordenadas.longitude).replace(",", ".");
         } else {
-            latitude = 0.0;
-            longitude = 0.0;
+            latitude = "0.0";
+            longitude = "0.0";
         }
 
         Map<String, String> mapa = new HashMap<>();
@@ -78,8 +79,10 @@ public class DadosOcorrencia implements Parcelable {
         mapa.put("bairro", this.bairro);
         mapa.put("cidade", this.cidade);
         mapa.put("estado", "MS");
-        mapa.put("latitude", decimalFormat.format(latitude));
-        mapa.put("longitude", decimalFormat.format(longitude));
+        mapa.put("latitude", latitude);
+        mapa.put("longitude", longitude);
+//        Log.i("LatLng", "Lat: " + latitude + ". Lng: " + longitude);
+//        Log.i("LatLng", "Lat: " + decimalFormat.format(latitude) + ". Lng: " + decimalFormat.format(longitude));
 
         return mapa;
     }
