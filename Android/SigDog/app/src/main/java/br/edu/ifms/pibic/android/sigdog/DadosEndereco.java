@@ -122,37 +122,38 @@ public class DadosEndereco extends AppCompatActivity {
                     text = localizacao.toString();
                     Log.i("LatLng: ", localizacao.toString());
                     dadosOcorrencia.setCoordenadas(localizacao);
+
+                    new Thread(){
+                        @Override
+                        public void run(){
+                            HttpHelper enviaDados = new HttpHelper();
+
+                            try {
+                                s = enviaDados.doPost(
+                                        "http://sigcao.herokuapp.com/ocorrencias/nova/",
+                                        dadosOcorrencia.converteParaMapa(),
+                                        "UTF-8");
+                                Log.e("livroandroid", "String retorno: " + s);
+                            } catch (IOException e){
+                                Log.e("livroandroid", "Erro " + e.getMessage(), e);
+                            }
+
+                        }
+                    }.start();
+
+                    Toast.makeText(getApplicationContext(), "Ocorrência enviada.", Toast.LENGTH_SHORT).show();
+
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+
                 } else {
                     text = "Shift.";
                     Log.i("Endereco completo: ", "Deu merda!");
+                    Toast.makeText(getApplicationContext(), "Verifique o endereço.", Toast.LENGTH_SHORT).show();
                 }
 
-                new Thread(){
-                    @Override
-                    public void run(){
-                        HttpHelper enviaDados = new HttpHelper();
 
-                        try {
-                            s = enviaDados.doPost(
-                                    "http://sigcao.herokuapp.com/ocorrencias/nova/",
-                                    dadosOcorrencia.converteParaMapa(),
-                                    "UTF-8");
-                            Log.e("livroandroid", "String retorno: " + s);
-                        } catch (IOException e){
-                            Log.e("livroandroid", "Erro " + e.getMessage(), e);
-                        }
-
-                    }
-                }.start();
-
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
-                toast.show();
-
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
             }
         }
         return super.onOptionsItemSelected(item);

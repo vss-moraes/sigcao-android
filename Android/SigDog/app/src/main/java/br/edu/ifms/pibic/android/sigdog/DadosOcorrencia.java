@@ -17,9 +17,12 @@ public class DadosOcorrencia implements Parcelable {
     private String sexo;
     private String data;
     private String enderecoCompleto;
-    private LatLng coordenadas;
+    //private LatLng coordenadas;
     private String cidade;
     private String bairro;
+    private String veterinario;
+    private double latitude;
+    private double longitude;
 
     public void setCidade(String cidade) {
         this.cidade = cidade;
@@ -34,20 +37,30 @@ public class DadosOcorrencia implements Parcelable {
     }
 
     public void setCoordenadas(LatLng coordenadas){
-        this.coordenadas = coordenadas;
+        this.latitude = coordenadas.latitude;
+        this.longitude = coordenadas.longitude;
     }
 
-    public DadosOcorrencia (String raca, String faixaEtaria, String doenca, String sexo, String data){
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public DadosOcorrencia (String raca, String faixaEtaria, String doenca, String sexo, String data, String veterinario){
         this.raca = raca;
         this.faixaEtaria = faixaEtaria;
         this.doenca = doenca;
         this.sexo = sexo;
         this.data = data;
+        this.veterinario = veterinario;
     }
 
     //parcel part
     public DadosOcorrencia(Parcel in){
-        String[] dados = new String[6];
+        String[] dados = new String[7];
 
         in.readStringArray(dados);
         this.raca = dados[0];
@@ -56,18 +69,11 @@ public class DadosOcorrencia implements Parcelable {
         this.sexo = dados[3];
         this.data = dados[4];
         this.enderecoCompleto = dados[5];
+        this.veterinario = dados[6];
     }
 
     public Map<String, String> converteParaMapa (){
         DecimalFormat decimalFormat = new DecimalFormat("#.000000");
-        String latitude, longitude;
-        if (this.coordenadas != null) {
-            latitude = decimalFormat.format(this.coordenadas.latitude).replace(",", ".");
-            longitude = decimalFormat.format(this.coordenadas.longitude).replace(",", ".");
-        } else {
-            latitude = "0.0";
-            longitude = "0.0";
-        }
 
         Map<String, String> mapa = new HashMap<>();
         mapa.put("doenca", this.doenca);
@@ -79,10 +85,9 @@ public class DadosOcorrencia implements Parcelable {
         mapa.put("bairro", this.bairro);
         mapa.put("cidade", this.cidade);
         mapa.put("estado", "MS");
-        mapa.put("latitude", latitude);
-        mapa.put("longitude", longitude);
-//        Log.i("LatLng", "Lat: " + latitude + ". Lng: " + longitude);
-//        Log.i("LatLng", "Lat: " + decimalFormat.format(latitude) + ". Lng: " + decimalFormat.format(longitude));
+        mapa.put("veterinario", this.veterinario);
+        mapa.put("latitude", decimalFormat.format(latitude).replace(",", "."));   
+        mapa.put("longitude", decimalFormat.format(longitude).replace(",", "."));
 
         return mapa;
     }
@@ -95,7 +100,7 @@ public class DadosOcorrencia implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags){
         dest.writeStringArray(new String[]{this.raca, this.faixaEtaria, this.doenca, this.sexo,
-                this.data, this.enderecoCompleto});
+                this.data, this.enderecoCompleto, this.veterinario});
     }
 
     public static final Parcelable.Creator<DadosOcorrencia> CREATOR = new Parcelable.Creator<DadosOcorrencia>() {

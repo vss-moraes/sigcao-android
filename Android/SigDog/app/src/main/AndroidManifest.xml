@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="br.edu.ifms.pibic.android.sigdog" >
+    package="br.edu.ifms.pibic.android.sigdog">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -11,10 +11,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme" >
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,24 +24,19 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Ocorrencia"
-            android:label="Cadastrar Ocorrência" >
-        </activity>
+            android:label="Cadastrar Ocorrência"></activity>
         <activity
             android:name=".DadosAnimal"
-            android:label="Cadastrar Ocorrência" >
-        </activity>
+            android:label="Cadastrar Ocorrência"></activity>
         <activity
             android:name=".DadosEndereco"
-            android:label="Cadastrar Ocorrência" >
-        </activity>
+            android:label="Cadastrar Ocorrência"></activity>
         <activity
             android:name=".Filtrar"
-            android:label="Filtrar" >
-        </activity>
+            android:label="Filtrar"></activity>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -55,6 +50,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name=".CadastroVet"></activity>
     </application>
 
 </manifest>

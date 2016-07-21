@@ -1,7 +1,9 @@
 package br.edu.ifms.pibic.android.sigdog;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +33,7 @@ public class DadosAnimal extends AppCompatActivity implements View.OnClickListen
     private String dateString;
     private Spinner spinnerDoencas;
     private Spinner spinnerIdade;
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +128,8 @@ public class DadosAnimal extends AppCompatActivity implements View.OnClickListen
             } else if (doencaSelecionada.getText().toString().equals("Selecione")){
                 doencaSelecionada.setError("Preenchimento obrigatório!");
             } else {
+                sharedPref = getSharedPreferences("vet", Context.MODE_PRIVATE);
+                String veterinario = sharedPref.getString("id", null);
 
                 Log.i("SEXO: ", "Masc 1, Fem 2: " + sexoIndex);
 
@@ -133,7 +138,8 @@ public class DadosAnimal extends AppCompatActivity implements View.OnClickListen
                         spinnerIdade.getSelectedItemPosition() + "",
                         spinnerDoencas.getSelectedItemPosition() + "",
                         sexoIndex + "",
-                        dataEnvio);
+                        dataEnvio,
+                        veterinario);
                 Intent dadosEndereco = new Intent(getApplicationContext(), DadosEndereco.class);
                 dadosEndereco.putExtra("dadosAnimal", dadosOcorrencia);
                 startActivity(dadosEndereco);
