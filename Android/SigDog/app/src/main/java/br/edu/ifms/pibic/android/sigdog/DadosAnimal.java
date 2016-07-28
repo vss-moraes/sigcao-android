@@ -562,6 +562,7 @@ public class DadosAnimal extends AppCompatActivity implements View.OnClickListen
             "West highland white terrier",
             "Westie",
             "Whippet",
-            "Yorkshire terrier"
+            "Yorkshire terrier",
+            "SRD(Sem raça definida)"
     };
 }

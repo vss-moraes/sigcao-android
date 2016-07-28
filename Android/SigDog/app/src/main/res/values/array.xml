@@ -2,8 +2,10 @@
 <resources>
     <string-array name="doencas_array">
         <item>Selecione</item>
+        <item>Babesiose</item>
         <item>Cinomose</item>
         <item>Coronavirose</item>
+        <item>Ehrlichiose</item>
         <item>Hepatite Infecciosa</item>
         <item>Leishmaniose</item>
         <item>Leptospirose</item>
@@ -67,9 +69,9 @@
 
     <string-array name="idade_array">
         <item>Selecione</item>
-        <item>Filhote</item>
-        <item>Jovem</item>
-        <item>Adulto</item>
-        <item>Idoso</item>
+        <item>Filhote (O - 6 meses)</item>
+        <item>Jovem (6 meses - 2 anos)</item>
+        <item>Adulto (2 anos - 8 anos)</item>
+        <item>Idoso (mais de 8 anos)</item>
     </string-array>
 </resources>
